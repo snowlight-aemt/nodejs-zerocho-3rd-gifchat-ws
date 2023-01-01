@@ -8,16 +8,19 @@
 
 <div>F12 를 눌러 console 탭과 network 탭을 확인하세요.</div>
 
+<script src="/socket.io/socket.io.js"></script>
 <script>
     // WebSocket 브라우저에서 지원해 주기 때문에 따로 모듈을 받을 필요가 없다.
-    const webSocket = new WebSocket("ws://localhost:8005");
-    webSocket.onopen = function() {
-        console.log('서버와 웹 소켓 연결 성공');
-    }
-    webSocket.onmessage = function(event) {
-        console.log(event.data);
-        webSocket.send('클라이언트에서 서버로 답장을 보냅니다.');
-    }
+    // transports: ['websocket'] 를 사용하면 polling 를 시도하지 않는다.
+    const socket = new io.connect("http://localhost:8005",{
+        path: '/socket.io',
+        transports: ['websocket'],
+    });
+
+    socket.on('news', (data) => {
+        console.log(data);
+        socket.emit('reply', 'Hello Node JS');
+    });
 </script>
 
 </body>
