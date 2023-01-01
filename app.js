@@ -6,6 +6,8 @@ const session = require('express-session');
 const nunjucks = require('nunjucks');
 const dotenv = require('dotenv');
 dotenv.config();
+
+const webSocket = require('./socket');
 const indexRouter = require('./routes');
 const app = express();
 app.set('port', process.env.PORT || 8005);
@@ -46,6 +48,8 @@ app.use((err, req, res, next) => {
    res.render('error');
 });
 
-app.listen(app.get('port'), () => {
+const server = app.listen(app.get('port'), () => {
     console.log(`${app.get('port')} 포트로 서비스가 시작되었습니다.`);
-})
+});
+
+webSocket(server);
