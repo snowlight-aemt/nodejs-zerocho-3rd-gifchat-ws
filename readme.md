@@ -11,3 +11,5 @@ client <<--WS(양방향)--> PORT 8005 (포트 공유)
                       |--> NodeJs --> 웹 소켓 모듈
 ```  
 
+## MongoDB
+### Mongose 사용

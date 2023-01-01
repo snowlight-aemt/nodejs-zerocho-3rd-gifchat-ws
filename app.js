@@ -5,6 +5,8 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const nunjucks = require('nunjucks');
 const dotenv = require('dotenv');
+const connect = require('./schemas');
+const ColorHash = require('color-hash').default;
 dotenv.config();
 
 const webSocket = require('./socket');
@@ -30,6 +32,8 @@ app.use(session({
         secure: false,
     },
 }));
+
+connect();
 
 app.use('/', indexRouter);
 
