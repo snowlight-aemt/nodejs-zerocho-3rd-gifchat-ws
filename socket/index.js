@@ -1,28 +1,27 @@
 const SocketIO = require('socket.io');
 
-module.exports = (server) => {
+module.exports = (server, app) => {
     const io = SocketIO(server, { path: '/socket.io'});
 
-    io.on('connection', (socket) => {
-        const req = socket.request;
-        const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
-        // socket.id 연결에 아이디
-        console.log('새로운 클라이언트 접속', ip, socket.id, req.ip);
+    // express 에서 io 를 사용하기 위해서
+    app.set('io', io);
+    const room = io.of('./room');
+    const chat = io.of('./chat');
+
+    room.on('connection', (socket) => {
+        console.log('room 네임스페이스 접속');
         socket.on('disconnect', () => {
-            console.log('클라이언트 접속 해제', ip, socket.id);
-
-            // 연결이 끊어진 경우 인터벌을 멈추어야 한다.
-            clearInterval(socket.interval);
-        });
-        socket.on('reply', (data) => {
-            console.log(data);
+            console.log('room 네임스페이스 접속 해제');
         })
+    });
 
-        socket.on('error', console.error);
-        socket.interval = setInterval(() => {
-            // 웹소켓 연결을 맺고 바로 전송하는 경우 안되는 경우가 있다.
-            socket.emit('news', 'Hello Socket.IO');
-        }, 3000);
-
+    chat.on('connection', (socket) => {
+        console.log('chat 네임스페이스 접속');
+        socket.on('join', (data) => {
+            socket.join(data);                  // 방에 참가
+        })
+        socket.on('disconnect', () => {
+            console.log('chat 네임스페이스 접속 해제');
+        })
     });
 };

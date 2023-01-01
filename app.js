@@ -34,6 +34,14 @@ app.use(session({
     },
 }));
 
+app.use((req, res, next) => {
+    if (!req.session.color) {
+        const colorHash = new ColorHash();
+        req.session.color = colorHash.hex(req.sessionID);
+        console.log(req.session.color, req.sessionID)
+    }
+    next();
+});
 
 app.use('/', indexRouter);
 
@@ -56,4 +64,4 @@ const server = app.listen(app.get('port'), () => {
     console.log(`${app.get('port')} 포트로 서비스가 시작되었습니다.`);
 });
 
-webSocket(server);
+webSocket(server, app);

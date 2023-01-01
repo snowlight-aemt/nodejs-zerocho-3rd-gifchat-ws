@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
+const { ObjectId } = Schema;
 const chatSchema = new Schema({
     room: {
         type: ObjectId,
@@ -14,7 +15,7 @@ const chatSchema = new Schema({
     gif: String,
     createdAt: {
         type: Date,
-        default: Date.new(),
+        default: Date.new,
     },
 });
 

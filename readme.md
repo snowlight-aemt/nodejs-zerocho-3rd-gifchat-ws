@@ -9,7 +9,27 @@ client --HTTP--> PORT 8005
 
 client <<--WS(양방향)--> PORT 8005 (포트 공유)
                       |--> NodeJs --> 웹 소켓 모듈
-```  
+```
 
 ## MongoDB
 ### Mongose 사용
+
+## Socket.io 네임스페이스와 방
+* io
+  * /chat (네임스페이스)
+    * /1, /2, /3 (방)
+
+* io
+  * /room (네임스페이스)
+    * /1, /2, /3 (방)
+
+## API
+* socket.on
+* socket.of
+```javascript
+const namespace = socket.of(`/namespace`);
+namespace.on('connection', (socket) => {});
+```
+* io.of('/namespace').adapter
+* socket.join
+* socket.leave
