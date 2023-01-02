@@ -1,4 +1,5 @@
 const Room = require('../schemas/room');
+const Chat = require('../schemas/chat');
 
 const { removeRoom: removeRoomService } = require('../services');
 
@@ -51,7 +52,8 @@ exports.enterRoom = async (req, res, next) => {
             return res.redirect('/?error=허용 인원을 초과했습니다.');
         }
 
-        res.render('chat', { title: 'GIF 채팅방 생성', chats: [], user: req.session.color });
+        const chats = await Chat.find({ room: room._id }).sort('createdAt');
+        res.render('chat', { title: 'GIF 채팅방 생성', chats, user: req.session.color, room });
     } catch (error) {
         console.error(error);
         next(error);
@@ -67,3 +69,18 @@ exports.removeRoom = async (req, res, next) => {
         next(error);
     }
 };
+
+exports.sendChat = async (req, res, next) => {
+    try {
+        const chat = await Chat.create({
+            room: req.params.id,
+            user: req.session.color,
+            chat: req.body.chat,
+        });
+        req.app.get('io').of('/chat').to(req.params.id).emit('chat', chat);
+        res.send('ok');
+    } catch (error) {
+        console.error(error);
+        next(error);
+    }
+}
