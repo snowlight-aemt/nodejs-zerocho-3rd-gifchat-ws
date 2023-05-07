@@ -88,3 +88,7 @@ socket.broadcast.to('방 아이디').emit('이벤트', date); // 방
 * 채팅방에서 한 사람에게 귓속말 보내기 (화면을 만들고 socket (소켓 아이디) 메서드 사용하기
 * 방장 기능 구현하기(방에 방장 정보를 저장한 후 방장이 나갔을 때는 방장을 위임하는 기능 추가하기)
 * 강퇴 기능 구현하기 (프런트엔드와 서버에 강퇴 소켓 이벤트 추가하기)
+
+## Fork Url
+https://github.com/ZeroCho/nodejs-book
+https://www.youtube.com/@ZeroChoTV
